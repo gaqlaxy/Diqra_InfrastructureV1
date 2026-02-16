@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+
+@theme {
+    --color-primary: #1152d4;
+    --color-accent-gold: #C5A059;
+    --color-charcoal: #1A1C1E;
+    --color-slate-gray: #4A4E54;
+    --color-background-light: #f6f6f8;
+    --color-background-dark: #101622;
+
+
+
+
+    --spacing-128: 32rem;
+}
+
+@layer base {
+    body {
+        font-family: "Geist Mono", sans-serif;
+        @apply overflow-x-hidden bg-background-light text-charcoal antialiased selection:bg-primary selection:text-white;
+    }
+
+}
+
+/* Custom Utilities */
+@layer utilities {
+    .font-serif {
+        font-family: "Geist Mono", sans-serif;
+    }
+
+    .text-spaced {
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+    }
+
+    /* Hide Scrollbar but allow scroll */
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
