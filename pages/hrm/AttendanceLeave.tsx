@@ -3,69 +3,193 @@ import {
     Calendar,
     Clock,
     CheckCircle2,
-    XCircle,
     AlertCircle,
-    ArrowRight,
-    Filter,
+    History,
+    Plane,
     Check,
     X,
-    History,
-    Plane
+    Settings,
+    Copy,
+    ArrowUpRight
 } from 'lucide-react';
+import {
+    attendanceRecords as initialAttendance,
+    leaveRequests as initialLeaves,
+    AttendanceRecord,
+    LeaveRequest
+} from '../../data/hrmData';
 
 const AttendanceLeave: React.FC = () => {
     const [activeTab, setActiveTab] = useState<'attendance' | 'leave'>('attendance');
+    const [attendance, setAttendance] = useState<AttendanceRecord[]>(initialAttendance);
+    const [leaves, setLeaves] = useState<LeaveRequest[]>(initialLeaves);
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [copied, setCopied] = useState(false);
 
-    const attendanceRecord = [
-        { id: 'DI-001', name: 'Ar. Jafar', time: '09:12 AM', status: 'On-Time', location: 'Office' },
-        { id: 'DI-002', name: 'Er. Naveen', time: '09:45 AM', status: 'Late', location: 'Site B' },
-        { id: 'DI-005', name: 'Sara Khan', time: '09:05 AM', status: 'On-Time', location: 'Office' },
-        { id: 'DI-012', name: 'Priya Verma', time: '09:30 AM', status: 'On-Time', location: 'Office' },
-        { id: 'DI-008', name: 'Rohan Sharma', time: '-', status: 'Absent', location: '-' },
-    ];
+    const handleAttendanceUpdate = (index: number, field: keyof AttendanceRecord, value: string) => {
+        const updated = [...attendance];
+        updated[index] = { ...updated[index], [field]: value } as AttendanceRecord;
+        setAttendance(updated);
+    };
 
-    const leaveRequests = [
-        { id: 'L-501', name: 'Rohan Sharma', type: 'Casual Leave', duration: '2 Days', dates: 'Feb 23 - Feb 24', reason: 'Personal work', status: 'Pending' },
-        { id: 'L-502', name: 'Sara Khan', type: 'Sick Leave', duration: '1 Day', dates: 'Feb 15', reason: 'Fever', status: 'Approved' },
-        { id: 'L-503', name: 'Er. Naveen', type: 'Vacation', duration: '5 Days', dates: 'Mar 10 - Mar 15', reason: 'Family trip', status: 'Pending' },
-    ];
+    const handleLeaveUpdate = (index: number, field: keyof LeaveRequest, value: string) => {
+        const updated = [...leaves];
+        updated[index] = { ...updated[index], [field]: value } as LeaveRequest;
+        setLeaves(updated);
+    };
+
+    const copyData = () => {
+        const data = activeTab === 'attendance' ? attendance : leaves;
+        const varName = activeTab === 'attendance' ? 'attendanceRecords' : 'leaveRequests';
+        const code = `export const ${varName} = ${JSON.stringify(data, null, 2)};`;
+        navigator.clipboard.writeText(code);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
 
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                     <h1 className="text-2xl font-black text-charcoal tracking-tight uppercase">HR Logistics</h1>
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Attendance & Leave Management</p>
                 </div>
 
-                <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+                <div className="flex items-center gap-3">
                     <button
-                        onClick={() => setActiveTab('attendance')}
-                        className={`px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'attendance' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-charcoal'
-                            }`}
+                        onClick={() => setIsEditMode(!isEditMode)}
+                        className={`p-3 border rounded-xl transition-all ${isEditMode ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : 'bg-white text-charcoal border-slate-200 hover:border-primary/40'}`}
                     >
-                        Attendance
+                        {isEditMode ? <X size={20} /> : <Settings size={20} />}
                     </button>
-                    <button
-                        onClick={() => setActiveTab('leave')}
-                        className={`px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'leave' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-charcoal'
-                            }`}
-                    >
-                        Leave Requests
-                    </button>
+                    <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200 shadow-sm">
+                        <button
+                            onClick={() => setActiveTab('attendance')}
+                            className={`px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'attendance' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-charcoal'
+                                }`}
+                        >
+                            Attendance
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('leave')}
+                            className={`px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'leave' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-charcoal'
+                                }`}
+                        >
+                            Leave Requests
+                        </button>
+                    </div>
                 </div>
             </div>
 
+            {isEditMode && (
+                <div className="bg-charcoal p-8 rounded-2xl border border-primary/20 animate-in slide-in-from-top-4 duration-300">
+                    <div className="flex justify-between items-center mb-6">
+                        <h3 className="text-xs font-bold text-primary uppercase tracking-widest">
+                            Update {activeTab === 'attendance' ? 'Attendance Logs' : 'Leave Records'}
+                        </h3>
+                        <button
+                            onClick={copyData}
+                            className="flex items-center gap-2 text-[10px] font-bold text-white uppercase tracking-widest bg-white/5 px-4 py-2 hover:bg-white/10 transition-all border border-white/10 rounded-lg"
+                        >
+                            {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
+                            {copied ? 'Copied' : `Copy Updated ${activeTab === 'attendance' ? 'Attendance' : 'Leaves'}`}
+                        </button>
+                    </div>
+
+                    <div className="space-y-4 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
+                        {(activeTab === 'attendance' ? attendance : leaves).map((item, i) => (
+                            <div key={item.id} className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-white/5 border border-white/5 rounded-xl">
+                                <div className="md:col-span-1">
+                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Name</label>
+                                    <input
+                                        type="text"
+                                        value={item.name}
+                                        onChange={(e) => activeTab === 'attendance' ? handleAttendanceUpdate(i, 'name', e.target.value) : handleLeaveUpdate(i, 'name', e.target.value)}
+                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                    />
+                                </div>
+                                {activeTab === 'attendance' ? (
+                                    <>
+                                        <div>
+                                            <label className="text-[9px] font-black text-primary uppercase mb-1 block">Time</label>
+                                            <input
+                                                type="text"
+                                                value={(item as AttendanceRecord).time}
+                                                onChange={(e) => handleAttendanceUpdate(i, 'time', e.target.value)}
+                                                className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-[9px] font-black text-primary uppercase mb-1 block">Location</label>
+                                            <input
+                                                type="text"
+                                                value={(item as AttendanceRecord).location}
+                                                onChange={(e) => handleAttendanceUpdate(i, 'location', e.target.value)}
+                                                className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                            />
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div>
+                                            <label className="text-[9px] font-black text-primary uppercase mb-1 block">Dates</label>
+                                            <input
+                                                type="text"
+                                                value={(item as LeaveRequest).dates}
+                                                onChange={(e) => handleLeaveUpdate(i, 'dates', e.target.value)}
+                                                className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-[9px] font-black text-primary uppercase mb-1 block">Type</label>
+                                            <input
+                                                type="text"
+                                                value={(item as LeaveRequest).type}
+                                                onChange={(e) => handleLeaveUpdate(i, 'type', e.target.value)}
+                                                className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                            />
+                                        </div>
+                                    </>
+                                )}
+                                <div>
+                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Status</label>
+                                    <select
+                                        value={item.status}
+                                        onChange={(e) => activeTab === 'attendance' ? handleAttendanceUpdate(i, 'status', e.target.value) : handleLeaveUpdate(i, 'status', e.target.value)}
+                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                    >
+                                        {activeTab === 'attendance' ? (
+                                            <>
+                                                <option value="On-Time">On-Time</option>
+                                                <option value="Late">Late</option>
+                                                <option value="Absent">Absent</option>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <option value="Pending">Pending</option>
+                                                <option value="Approved">Approved</option>
+                                                <option value="Declined">Declined</option>
+                                            </>
+                                        )}
+                                    </select>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             {activeTab === 'attendance' ? (
                 <div className="space-y-6 animate-in fade-in duration-300">
-                    {/* Attendance Overview Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
                             <div className="flex justify-between items-center mb-4">
                                 <div className="p-3 bg-green-50 text-green-500 rounded-xl">
                                     <CheckCircle2 size={20} />
                                 </div>
-                                <span className="text-2xl font-black text-charcoal tracking-tight">21</span>
+                                <span className="text-2xl font-black text-charcoal tracking-tight">
+                                    {attendance.filter(a => a.status === 'On-Time').length}
+                                </span>
                             </div>
                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Present Status</p>
                         </div>
@@ -74,7 +198,9 @@ const AttendanceLeave: React.FC = () => {
                                 <div className="p-3 bg-orange-50 text-orange-500 rounded-xl">
                                     <Clock size={20} />
                                 </div>
-                                <span className="text-2xl font-black text-charcoal tracking-tight">02</span>
+                                <span className="text-2xl font-black text-charcoal tracking-tight">
+                                    {attendance.filter(a => a.status === 'Late').length}
+                                </span>
                             </div>
                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Late Arrivals</p>
                         </div>
@@ -83,33 +209,28 @@ const AttendanceLeave: React.FC = () => {
                                 <div className="p-3 bg-red-50 text-red-500 rounded-xl">
                                     <AlertCircle size={20} />
                                 </div>
-                                <span className="text-2xl font-black text-charcoal tracking-tight">01</span>
+                                <span className="text-2xl font-black text-charcoal tracking-tight">
+                                    {attendance.filter(a => a.status === 'Absent').length}
+                                </span>
                             </div>
                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Absent Staff</p>
                         </div>
                     </div>
 
-                    {/* Attendance Table */}
                     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-                        <div className="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
-                            <h3 className="text-[10px] font-black text-charcoal uppercase tracking-widest">Daily Attendance Logs - Feb 22, 2026</h3>
-                            <button className="p-2 border border-slate-200 rounded-lg text-slate-400 hover:text-primary transition-colors">
-                                <History size={16} />
-                            </button>
-                        </div>
                         <div className="overflow-x-auto">
                             <table className="w-full text-left">
                                 <thead>
-                                    <tr className="border-b border-slate-100 text-[9px] font-black text-slate-400 uppercase tracking-widest">
-                                        <th className="px-8 py-4">Employee</th>
-                                        <th className="px-8 py-4">Punch In</th>
-                                        <th className="px-8 py-4">Location</th>
-                                        <th className="px-8 py-4">Status</th>
+                                    <tr className="border-b border-slate-100 text-[9px] font-black text-slate-400 uppercase tracking-widest bg-slate-50/30">
+                                        <th className="px-8 py-5">Employee</th>
+                                        <th className="px-8 py-5">Punch In</th>
+                                        <th className="px-8 py-5">Location</th>
+                                        <th className="px-8 py-5">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {attendanceRecord.map((rec) => (
-                                        <tr key={rec.id} className="border-b border-slate-50 last:border-0">
+                                    {attendance.map((rec) => (
+                                        <tr key={rec.id} className="border-b border-slate-50 last:border-0 hover:bg-slate-50/50 transition-colors">
                                             <td className="px-8 py-5">
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-[10px] font-black text-charcoal">
@@ -136,9 +257,8 @@ const AttendanceLeave: React.FC = () => {
                 </div>
             ) : (
                 <div className="space-y-6 animate-in fade-in duration-300">
-                    {/* Leave Requests List */}
                     <div className="grid grid-cols-1 gap-4">
-                        {leaveRequests.map((req) => (
+                        {leaves.map((req) => (
                             <div key={req.id} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6 group hover:border-primary/20 transition-all">
                                 <div className="flex items-start gap-5">
                                     <div className={`p-4 rounded-xl shrink-0 ${req.status === 'Approved' ? 'bg-green-50 text-green-500' : 'bg-blue-50 text-blue-500'}`}>
@@ -172,34 +292,12 @@ const AttendanceLeave: React.FC = () => {
                                         </>
                                     ) : (
                                         <div className="flex items-center gap-2 text-green-600 bg-green-50 px-6 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest border border-green-100">
-                                            <Check size={16} /> Approved
+                                            <Check size={16} /> {req.status}
                                         </div>
                                     )}
                                 </div>
                             </div>
                         ))}
-                    </div>
-
-                    <div className="bg-charcoal p-10 rounded-3xl text-white relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-8 text-primary/10 group-hover:scale-110 transition-transform duration-700">
-                            <Calendar size={120} strokeWidth={1} />
-                        </div>
-                        <div className="relative z-10 max-w-lg">
-                            <h2 className="text-2xl font-black uppercase tracking-tight mb-4 text-primary">Leave Policy Overview</h2>
-                            <p className="text-xs text-white/40 leading-relaxed uppercase tracking-widest mb-8">
-                                Monthly quota resets on the 1st of every month. Directors reserve right for final approval on vacation requests over 3 days.
-                            </p>
-                            <div className="grid grid-cols-2 gap-8">
-                                <div>
-                                    <p className="text-3xl font-black mb-1">12</p>
-                                    <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em]">Annual Sick Leaves</p>
-                                </div>
-                                <div>
-                                    <p className="text-3xl font-black mb-1">18</p>
-                                    <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em]">Annual Paid Leaves</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             )}

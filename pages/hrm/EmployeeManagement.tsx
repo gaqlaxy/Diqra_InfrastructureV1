@@ -6,41 +6,124 @@ import {
     MoreVertical,
     Mail,
     Phone,
-    MapPin,
     Building2,
-    Calendar,
-    ChevronDown
+    ChevronDown,
+    Settings,
+    X,
+    Copy,
+    Check
 } from 'lucide-react';
+import { employees as initialEmployees, Employee } from '../../data/hrmData';
 
 const EmployeeManagement: React.FC = () => {
+    const [employeesList, setEmployeesList] = useState<Employee[]>(initialEmployees);
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [copied, setCopied] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedDept, setSelectedDept] = useState('All Departments');
 
-    const employees = [
-        { id: 'DI-001', name: 'Ar. Jafar', role: 'Director', dept: 'Executive', email: 'jafar@diqra.com', phone: '+91 98XXX-XXXX1', status: 'Active', joinDate: 'Jan 2022' },
-        { id: 'DI-002', name: 'Er. Naveen', role: 'Sr. Engineer', dept: 'Execution', email: 'naveen@diqra.com', phone: '+91 98XXX-XXXX2', status: 'Active', joinDate: 'Feb 2022' },
-        { id: 'DI-005', name: 'Sara Khan', role: 'Jr. Architect', dept: 'Design', email: 'sara@diqra.com', phone: '+91 98XXX-XXXX5', status: 'Active', joinDate: 'Nov 2023' },
-        { id: 'DI-008', name: 'Rohan Sharma', role: 'Site Supervisor', dept: 'Execution', email: 'rohan@diqra.com', phone: '+91 98XXX-XXXX8', status: 'On Leave', joinDate: 'Mar 2024' },
-        { id: 'DI-012', name: 'Priya Verma', role: 'Accountant', dept: 'Accounts', email: 'priya@diqra.com', phone: '+91 98XXX-XXXX2', status: 'Active', joinDate: 'Jan 2024' },
-    ];
-
-    const filteredEmployees = employees.filter(emp =>
+    const filteredEmployees = employeesList.filter(emp =>
         (emp.name.toLowerCase().includes(searchQuery.toLowerCase()) || emp.id.toLowerCase().includes(searchQuery.toLowerCase())) &&
         (selectedDept === 'All Departments' || emp.dept === selectedDept)
     );
 
+    const handleUpdate = (index: number, field: keyof Employee, value: string) => {
+        const updated = [...employeesList];
+        updated[index] = { ...updated[index], [field]: value } as Employee;
+        setEmployeesList(updated);
+    };
+
+    const copyData = () => {
+        const code = `export const employees = ${JSON.stringify(employeesList, null, 2)};`;
+        navigator.clipboard.writeText(code);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                     <h1 className="text-2xl font-black text-charcoal tracking-tight uppercase">Employee Management</h1>
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Staff Directory & Records</p>
                 </div>
-                <button className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-charcoal transition-all shadow-lg shadow-primary/20">
-                    <Plus size={16} />
-                    Add New Employee
-                </button>
+                <div className="flex gap-3">
+                    <button
+                        onClick={() => setIsEditMode(!isEditMode)}
+                        className={`p-3 border rounded-xl transition-all ${isEditMode ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : 'bg-white text-charcoal border-slate-200 hover:border-primary/40'}`}
+                    >
+                        {isEditMode ? <X size={20} /> : <Settings size={20} />}
+                    </button>
+                    <button className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-charcoal transition-all shadow-lg shadow-primary/20">
+                        <Plus size={16} />
+                        Add New Employee
+                    </button>
+                </div>
             </div>
+
+            {isEditMode && (
+                <div className="bg-charcoal p-8 rounded-2xl border border-primary/20 animate-in slide-in-from-top-4 duration-300">
+                    <div className="flex justify-between items-center mb-6">
+                        <h3 className="text-xs font-bold text-primary uppercase tracking-widest">Update Staff Directory</h3>
+                        <button
+                            onClick={copyData}
+                            className="flex items-center gap-2 text-[10px] font-bold text-white uppercase tracking-widest bg-white/5 px-4 py-2 hover:bg-white/10 transition-all border border-white/10 rounded-lg"
+                        >
+                            {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
+                            {copied ? 'Copied JSON' : 'Copy Updated Data'}
+                        </button>
+                    </div>
+                    <p className="text-[10px] text-white/40 mb-8 max-w-lg leading-relaxed uppercase tracking-widest font-bold">
+                        Modify staff details below and click "Copy Updated Data" to save permanently in hrmData.ts.
+                    </p>
+
+                    <div className="space-y-4 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
+                        {employeesList.map((emp, i) => (
+                            <div key={emp.id} className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-white/5 border border-white/5 rounded-xl">
+                                <div className="md:col-span-1">
+                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Full Name</label>
+                                    <input
+                                        type="text"
+                                        value={emp.name}
+                                        onChange={(e) => handleUpdate(i, 'name', e.target.value)}
+                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Role</label>
+                                    <input
+                                        type="text"
+                                        value={emp.role}
+                                        onChange={(e) => handleUpdate(i, 'role', e.target.value)}
+                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Email</label>
+                                    <input
+                                        type="email"
+                                        value={emp.email}
+                                        onChange={(e) => handleUpdate(i, 'email', e.target.value)}
+                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Status</label>
+                                    <select
+                                        value={emp.status}
+                                        onChange={(e) => handleUpdate(i, 'status', e.target.value)}
+                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                    >
+                                        <option value="Active">Active</option>
+                                        <option value="On Leave">On Leave</option>
+                                        <option value="Terminated">Terminated</option>
+                                    </select>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* Filters & Search */}
             <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row gap-4">
@@ -134,15 +217,6 @@ const EmployeeManagement: React.FC = () => {
                             ))}
                         </tbody>
                     </table>
-                </div>
-
-                {/* Pagination Placeholder */}
-                <div className="px-8 py-4 bg-slate-50/50 flex justify-between items-center border-t border-slate-100">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase">Showing {filteredEmployees.length} of {employees.length} Employees</p>
-                    <div className="flex gap-2">
-                        <button className="px-3 py-1.5 border border-slate-200 rounded text-[10px] font-bold uppercase text-slate-400 disabled:opacity-50" disabled>Prev</button>
-                        <button className="px-3 py-1.5 border border-slate-200 rounded text-[10px] font-bold uppercase text-charcoal">Next</button>
-                    </div>
                 </div>
             </div>
         </div>

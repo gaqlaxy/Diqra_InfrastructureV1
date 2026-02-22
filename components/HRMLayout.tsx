@@ -146,7 +146,7 @@ const HRMLayout: React.FC = () => {
 
                 {/* Main Content Area */}
                 <div className="flex-1 flex flex-col h-screen overflow-hidden pt-16 lg:pt-0">
-                    <header className="hidden lg:flex h-20 items-center justify-between px-10 bg-white border-b border-slate-200 shrink-0">
+                    <header className="hidden lg:flex h-16 items-center justify-between px-8 bg-white border-b border-slate-200 shrink-0">
                         <h2 className="text-sm font-black text-charcoal uppercase tracking-widest pl-4 border-l-4 border-primary">
                             {navItems.find(n => n.path === location.pathname)?.name || 'Dashboard'}
                         </h2>

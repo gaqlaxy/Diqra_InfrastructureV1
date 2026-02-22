@@ -1,6 +1,16 @@
 import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
-import { Book, ShieldCheck, Users, FileText, ChevronRight, Target, GanttChartSquare, BarChart3 } from 'lucide-react';
+import { NavLink, Outlet, Link } from 'react-router-dom';
+import {
+    Book,
+    ShieldCheck,
+    Users,
+    FileText,
+    ChevronRight,
+    Target,
+    GanttChartSquare,
+    BarChart3,
+    ArrowUpRight
+} from 'lucide-react';
 import HandbookAuth from './HandbookAuth';
 
 const HandbookLayout: React.FC = () => {
@@ -46,12 +56,12 @@ const HandbookLayout: React.FC = () => {
 
     return (
         <HandbookAuth>
-            <div className="min-h-screen bg-[#F3F3EF] pt-32 pb-20">
+            <div className="min-h-screen bg-[#F3F3EF] pt-12 pb-20">
                 <div className="container mx-auto px-6 md:px-12">
                     <div className="flex flex-col lg:flex-row gap-12">
                         {/* Sidebar */}
                         <aside className="w-full lg:w-1/4">
-                            <div className="sticky top-40 bg-white p-8 border border-charcoal/5 shadow-sm">
+                            <div className="sticky top-12 bg-white p-8 border border-charcoal/5 shadow-sm">
                                 <div className="flex items-center gap-3 mb-8 pb-4 border-b border-charcoal/5">
                                     <div className="w-10 h-10 bg-primary flex items-center justify-center text-white">
                                         <Book size={20} />
@@ -94,6 +104,15 @@ const HandbookLayout: React.FC = () => {
                                             </NavLink>
                                         )
                                     ))}
+                                    <Link
+                                        to="/"
+                                        className="flex items-center justify-between p-3 text-sm font-bold text-primary hover:bg-primary/5 transition-all border border-transparent mt-4"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <ArrowUpRight size={18} />
+                                            <span>Back to Website</span>
+                                        </div>
+                                    </Link>
                                 </nav>
 
                                 <div className="mt-12 p-6 bg-accent-gold/5 border border-accent-gold/10">

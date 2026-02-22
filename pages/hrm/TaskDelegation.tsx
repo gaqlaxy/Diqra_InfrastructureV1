@@ -9,41 +9,122 @@ import {
     CheckCircle2,
     User,
     ArrowUpRight,
-    Filter
+    Filter,
+    Settings,
+    X,
+    Copy,
+    Check
 } from 'lucide-react';
+import { tasks as initialTasks, Task } from '../../data/hrmData';
 
 const TaskDelegation: React.FC = () => {
-    const [tasks] = useState([
-        { id: 'T-101', title: 'Site Layout Planning', assignee: 'Sara Khan', category: 'Design', deadline: '2026-02-20', priority: 'High', status: 'In Progress' },
-        { id: 'T-102', title: 'BOQ Verification', assignee: 'Rohan Sharma', category: 'Execution', deadline: '2026-02-18', priority: 'Critical', status: 'Pending' },
-        { id: 'T-103', title: 'Client Feedback Integration', assignee: 'Ar. Jafar', category: 'Design', deadline: '2026-02-24', priority: 'Medium', status: 'Completed' },
-        { id: 'T-104', title: 'Material Procurement - Phase 2', assignee: 'Priya Verma', category: 'Accounts', deadline: '2026-02-28', priority: 'High', status: 'In Progress' },
-    ]);
+    const [tasksList, setTasksList] = useState<Task[]>(initialTasks);
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [copied, setCopied] = useState(false);
 
     const isOverdue = (deadline: string, status: string) => {
         if (status === 'Completed') return false;
-        const today = new Date('2026-02-22'); // Hardcoded today's date based on metadata
+        const today = new Date('2026-02-22');
         const deadDate = new Date(deadline);
         return deadDate < today;
     };
 
+    const handleUpdate = (index: number, field: keyof Task, value: string) => {
+        const updated = [...tasksList];
+        updated[index] = { ...updated[index], [field]: value } as Task;
+        setTasksList(updated);
+    };
+
+    const copyData = () => {
+        const code = `export const tasks = ${JSON.stringify(tasksList, null, 2)};`;
+        navigator.clipboard.writeText(code);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                     <h1 className="text-2xl font-black text-charcoal tracking-tight uppercase">Task Delegation</h1>
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Assignment & Tracking System</p>
                 </div>
-                <button className="flex items-center gap-2 bg-charcoal text-white px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-primary transition-all shadow-xl">
-                    <Plus size={16} className="text-primary" />
-                    Assign New Task
-                </button>
+                <div className="flex gap-3">
+                    <button
+                        onClick={() => setIsEditMode(!isEditMode)}
+                        className={`p-3 border rounded-xl transition-all ${isEditMode ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : 'bg-white text-charcoal border-slate-200 hover:border-primary/40'}`}
+                    >
+                        {isEditMode ? <X size={20} /> : <Settings size={20} />}
+                    </button>
+                    <button className="flex items-center gap-2 bg-charcoal text-white px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-primary transition-all shadow-xl">
+                        <Plus size={16} className="text-primary" />
+                        Assign New Task
+                    </button>
+                </div>
             </div>
 
-            {/* Grid Layout for Task Management */}
-            <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+            {isEditMode && (
+                <div className="bg-charcoal p-8 rounded-2xl border border-primary/20 animate-in slide-in-from-top-4 duration-300">
+                    <div className="flex justify-between items-center mb-6">
+                        <h3 className="text-xs font-bold text-primary uppercase tracking-widest">Update task Assignment</h3>
+                        <button
+                            onClick={copyData}
+                            className="flex items-center gap-2 text-[10px] font-bold text-white uppercase tracking-widest bg-white/5 px-4 py-2 hover:bg-white/10 transition-all border border-white/10 rounded-lg"
+                        >
+                            {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
+                            {copied ? 'Copied JSON' : 'Copy Updated Tasks'}
+                        </button>
+                    </div>
 
-                {/* Task Dashboard Column */}
+                    <div className="space-y-4 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
+                        {tasksList.map((task, i) => (
+                            <div key={task.id} className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-white/5 border border-white/5 rounded-xl">
+                                <div className="md:col-span-1">
+                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Title</label>
+                                    <input
+                                        type="text"
+                                        value={task.title}
+                                        onChange={(e) => handleUpdate(i, 'title', e.target.value)}
+                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Assignee</label>
+                                    <input
+                                        type="text"
+                                        value={task.assignee}
+                                        onChange={(e) => handleUpdate(i, 'assignee', e.target.value)}
+                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Deadline</label>
+                                    <input
+                                        type="text"
+                                        value={task.deadline}
+                                        onChange={(e) => handleUpdate(i, 'deadline', e.target.value)}
+                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Status</label>
+                                    <select
+                                        value={task.status}
+                                        onChange={(e) => handleUpdate(i, 'status', e.target.value)}
+                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                    >
+                                        <option value="Pending">Pending</option>
+                                        <option value="In Progress">In Progress</option>
+                                        <option value="Completed">Completed</option>
+                                    </select>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
                 <div className="xl:col-span-3 space-y-6">
                     <div className="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
                         <div className="relative flex-1">
@@ -56,7 +137,7 @@ const TaskDelegation: React.FC = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {tasks.map((task) => (
+                        {tasksList.map((task) => (
                             <div key={task.id} className={`bg-white rounded-2xl border ${isOverdue(task.deadline, task.status) ? 'border-red-100 bg-red-50/10' : 'border-slate-100'} shadow-sm p-6 hover:shadow-md transition-all group relative overflow-hidden`}>
                                 {isOverdue(task.deadline, task.status) && (
                                     <div className="absolute top-0 right-0 px-3 py-1 bg-red-500 text-white text-[8px] font-black uppercase tracking-widest rounded-bl-lg">
@@ -106,7 +187,6 @@ const TaskDelegation: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Task Analytics & Controls */}
                 <div className="space-y-8">
                     <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
                         <h2 className="text-xs font-black text-charcoal uppercase tracking-widest mb-6">Task Summary</h2>
@@ -120,36 +200,9 @@ const TaskDelegation: React.FC = () => {
                                     <div className="h-full bg-primary rounded-full" style={{ width: '64%' }}></div>
                                 </div>
                             </div>
-                            <div className="grid grid-cols-2 gap-4 pt-4">
-                                <div className="text-center p-3 bg-slate-50 rounded-xl">
-                                    <p className="text-xl font-black text-charcoal">12</p>
-                                    <p className="text-[9px] font-bold text-slate-400 uppercase">Todo</p>
-                                </div>
-                                <div className="text-center p-3 bg-green-50 rounded-xl">
-                                    <p className="text-xl font-black text-green-600">08</p>
-                                    <p className="text-[9px] font-bold text-green-500 uppercase">Done</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="bg-red-50 p-8 rounded-2xl border border-red-100">
-                        <div className="flex items-center gap-3 mb-4">
-                            <AlertCircle className="text-red-500" size={20} />
-                            <h2 className="text-xs font-black text-red-700 uppercase tracking-widest">Urgent Alerts</h2>
-                        </div>
-                        <p className="text-[10px] text-red-600 font-medium leading-relaxed mb-6">
-                            You have <span className="font-black">2 overdue tasks</span> that require immediate director intervention.
-                        </p>
-                        <div className="space-y-3">
-                            <div className="bg-white p-3 rounded-xl border border-red-50 text-[10px] font-bold text-charcoal flex justify-between items-center group cursor-pointer hover:border-red-200">
-                                DI-008 Rohan
-                                <span className="px-2 py-0.5 bg-red-100 text-red-600 rounded">2d late</span>
-                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     );
