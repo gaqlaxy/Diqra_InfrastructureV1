@@ -7,149 +7,149 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const Footer: React.FC = () => {
-  const footerRef = useRef<HTMLDivElement>(null);
+    const footerRef = useRef<HTMLDivElement>(null);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Staggered reveal for columns
-      gsap.from(".footer-col", {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        scrollTrigger: {
-            trigger: footerRef.current,
-            start: "top 95%",
-        }
-      });
-      
-      // Brand Name Parallax or Reveal
-      gsap.from(".footer-brand", {
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-            trigger: footerRef.current,
-            start: "top 90%",
-        }
-      });
-    }, footerRef);
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            // Staggered reveal for columns
+            gsap.from(".footer-col", {
+                y: 30,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                scrollTrigger: {
+                    trigger: footerRef.current,
+                    start: "top 95%",
+                }
+            });
 
-    return () => ctx.revert();
-  }, []);
+            // Brand Name Parallax or Reveal
+            gsap.from(".footer-brand", {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: footerRef.current,
+                    start: "top 90%",
+                }
+            });
+        }, footerRef);
 
-  return (
-    <footer ref={footerRef} className="bg-charcoal text-white pt-20 pb-10 relative overflow-hidden border-t border-white/10">
-        
-        <div className="container mx-auto px-6 md:px-12">
-            
-            {/* Massive Brand Header */}
-            <div className="mb-20 border-b border-white/10 pb-12 footer-brand">
-                <h1 className="font-display font-bold text-[10vw] md:text-[12vw] leading-[0.8] tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 select-none">
-                    DIQRA<span className="text-stroke text-white/5">CONST.</span>
-                </h1>
-            </div>
+        return () => ctx.revert();
+    }, []);
 
-            {/* Content Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-24">
-                
-                {/* Column 1: Address */}
-                <div className="footer-col space-y-6">
-                    <h4 className="text-xs font-bold text-accent-gold uppercase tracking-widest">Headquarters</h4>
-                    <address className="not-italic text-sm text-white/60 leading-relaxed hover:text-white transition-colors duration-300">
-                        Plot No. 45, Industrial Area Ph-II,<br/>
-                        Okhla, New Delhi 110020<br/>
-                        India
-                    </address>
-                    <div className="pt-2">
-                        <a href="mailto:hello@diqra.com" className="text-sm font-bold text-white hover:text-primary transition-colors flex items-center gap-2 group w-fit">
-                            <span className="relative">
-                                hello@diqra.com
-                                <span className="absolute left-0 bottom-0 w-full h-[1px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
-                            </span>
-                        </a>
-                        <a href="tel:+911145678900" className="text-sm font-bold text-white hover:text-primary transition-colors block mt-2 group w-fit">
-                             <span className="relative">
-                                +91 11 4567 8900
-                                <span className="absolute left-0 bottom-0 w-full h-[1px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
-                            </span>
-                        </a>
-                    </div>
+    return (
+        <footer ref={footerRef} className="bg-charcoal text-white pt-20 pb-10 relative overflow-hidden border-t border-white/10">
+
+            <div className="container mx-auto px-6 md:px-12">
+
+                {/* Massive Brand Header */}
+                <div className="mb-20 border-b border-white/10 pb-12 footer-brand">
+                    <h1 className="font-display font-bold text-[10vw] md:text-[12vw] leading-[0.8] tracking-tighter text-transparent bg-clip-text bg-linear-to-b from-white to-white/20 select-none">
+                        DIQRA<span className="text-stroke text-white/5">INFRA.</span>
+                    </h1>
                 </div>
 
-                {/* Column 2: Navigation */}
-                <div className="footer-col space-y-6">
-                    <h4 className="text-xs font-bold text-accent-gold uppercase tracking-widest">Explore</h4>
-                    <ul className="space-y-3">
-                        {['Projects', 'Services', 'Process', 'Careers', 'About'].map((item) => (
-                            <li key={item}>
-                                <Link to={`/${item.toLowerCase()}`} className="text-sm text-white/60 hover:text-white transition-colors flex items-center gap-2 group w-fit">
-                                    <span className="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                                    <span className="relative">
-                                        {item}
-                                        <span className="absolute left-0 bottom-0 w-full h-[1px] bg-white scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
-                                    </span>
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                {/* Content Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-24">
 
-                {/* Column 3: Socials */}
-                <div className="footer-col space-y-6">
-                    <h4 className="text-xs font-bold text-accent-gold uppercase tracking-widest">Social</h4>
-                    <ul className="space-y-3">
-                        {['LinkedIn', 'Instagram', 'Twitter (X)', 'Behance'].map((item) => (
-                            <li key={item}>
-                                <a href="#" className="text-sm text-white/60 hover:text-white transition-colors flex items-center gap-2 group w-fit">
-                                    <span className="relative">
-                                        {item}
-                                        <span className="absolute left-0 bottom-0 w-full h-[1px] bg-white scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
-                                    </span>
-                                    <ArrowUpRight size={12} className="opacity-0 -translate-x-2 group-hover:translate-x-0 group-hover:opacity-100 transition-all text-primary" />
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                {/* Column 4: Action */}
-                <div className="footer-col flex flex-col justify-between items-start md:items-end">
-                    <button 
-                        onClick={scrollToTop}
-                        className="group flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-white hover:text-primary transition-colors"
-                    >
-                        Back to Top 
-                        <div className="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center group-hover:bg-white group-hover:border-white transition-all bg-white/5 relative overflow-hidden">
-                            <ArrowUp size={18} className="text-white group-hover:text-charcoal transition-colors relative z-10 group-hover:-translate-y-1 group-hover:scale-110 duration-300" />
+                    {/* Column 1: Address */}
+                    <div className="footer-col space-y-6">
+                        <h4 className="text-xs font-bold text-accent-gold uppercase tracking-widest">Headquarters</h4>
+                        <address className="not-italic text-sm text-white/60 leading-relaxed hover:text-white transition-colors duration-300">
+                            Plot No. 45, Industrial Area Ph-II,<br />
+                            Okhla, New Delhi 110020<br />
+                            India
+                        </address>
+                        <div className="pt-2">
+                            <a href="mailto:hello@diqra.com" className="text-sm font-bold text-white hover:text-primary transition-colors flex items-center gap-2 group w-fit">
+                                <span className="relative">
+                                    hello@diqra.com
+                                    <span className="absolute left-0 bottom-0 w-full h-px bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
+                                </span>
+                            </a>
+                            <a href="tel:+911145678900" className="text-sm font-bold text-white hover:text-primary transition-colors block mt-2 group w-fit">
+                                <span className="relative">
+                                    +91 11 4567 8900
+                                    <span className="absolute left-0 bottom-0 w-full h-px bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
+                                </span>
+                            </a>
                         </div>
-                    </button>
-                    
-                    <div className="mt-8 md:mt-0 text-right hidden md:block">
-                        <p className="text-[10px] text-white/30 uppercase tracking-widest max-w-[150px]">
-                            Designing the world of tomorrow.
-                        </p>
+                    </div>
+
+                    {/* Column 2: Navigation */}
+                    <div className="footer-col space-y-6">
+                        <h4 className="text-xs font-bold text-accent-gold uppercase tracking-widest">Explore</h4>
+                        <ul className="space-y-3">
+                            {['Projects', 'Services', 'Process', 'Careers', 'About', 'Handbook'].map((item) => (
+                                <li key={item}>
+                                    <Link to={`/${item.toLowerCase()}`} className="text-sm text-white/60 hover:text-white transition-colors flex items-center gap-2 group w-fit">
+                                        <span className="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                                        <span className="relative">
+                                            {item}
+                                            <span className="absolute left-0 bottom-0 w-full h-px bg-white scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
+                                        </span>
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Column 3: Socials */}
+                    <div className="footer-col space-y-6">
+                        <h4 className="text-xs font-bold text-accent-gold uppercase tracking-widest">Social</h4>
+                        <ul className="space-y-3">
+                            {['LinkedIn', 'Instagram', 'Twitter (X)', 'Behance'].map((item) => (
+                                <li key={item}>
+                                    <a href="#" className="text-sm text-white/60 hover:text-white transition-colors flex items-center gap-2 group w-fit">
+                                        <span className="relative">
+                                            {item}
+                                            <span className="absolute left-0 bottom-0 w-full h-px bg-white scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
+                                        </span>
+                                        <ArrowUpRight size={12} className="opacity-0 -translate-x-2 group-hover:translate-x-0 group-hover:opacity-100 transition-all text-primary" />
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Column 4: Action */}
+                    <div className="footer-col flex flex-col justify-between items-start md:items-end">
+                        <button
+                            onClick={scrollToTop}
+                            className="group flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-white hover:text-primary transition-colors"
+                        >
+                            Back to Top
+                            <div className="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center group-hover:bg-white group-hover:border-white transition-all bg-white/5 relative overflow-hidden">
+                                <ArrowUp size={18} className="text-white group-hover:text-charcoal transition-colors relative z-10 group-hover:-translate-y-1 group-hover:scale-110 duration-300" />
+                            </div>
+                        </button>
+
+                        <div className="mt-8 md:mt-0 text-right hidden md:block">
+                            <p className="text-[10px] text-white/30 uppercase tracking-widest max-w-[150px]">
+                                Designing the world of tomorrow.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Footer Bottom */}
+                <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-white/30 uppercase tracking-[0.2em] footer-col">
+                    <p>&copy; 2024 Diqra Architects. ISO 9001 Certified.</p>
+                    <div className="flex gap-8">
+                        <a href="#" className="hover:text-white transition-colors hover:underline decoration-white/30 underline-offset-4">Privacy</a>
+                        <a href="#" className="hover:text-white transition-colors hover:underline decoration-white/30 underline-offset-4">Terms</a>
+                        <a href="#" className="hover:text-white transition-colors hover:underline decoration-white/30 underline-offset-4">Sitemap</a>
                     </div>
                 </div>
             </div>
-
-            {/* Footer Bottom */}
-            <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-white/30 uppercase tracking-[0.2em] footer-col">
-                <p>&copy; 2024 Diqra Architects. ISO 9001 Certified.</p>
-                <div className="flex gap-8">
-                    <a href="#" className="hover:text-white transition-colors hover:underline decoration-white/30 underline-offset-4">Privacy</a>
-                    <a href="#" className="hover:text-white transition-colors hover:underline decoration-white/30 underline-offset-4">Terms</a>
-                    <a href="#" className="hover:text-white transition-colors hover:underline decoration-white/30 underline-offset-4">Sitemap</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-  );
+        </footer>
+    );
 };
 
 export default Footer;

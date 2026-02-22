@@ -17,6 +17,10 @@ const ProjectsPage = React.lazy(() => import('./pages/ProjectsPage'));
 const ProcessPage = React.lazy(() => import('./pages/ProcessPage'));
 const CareersPage = React.lazy(() => import('./pages/CareersPage'));
 const ContactPage = React.lazy(() => import('./pages/ContactPage'));
+const HandbookLayout = React.lazy(() => import('./components/HandbookLayout'));
+const HRPolicyPage = React.lazy(() => import('./pages/handbook/HRPolicyPage'));
+const BrandStrategyPage = React.lazy(() => import('./pages/handbook/BrandStrategyPage'));
+const OperationalGovernancePage = React.lazy(() => import('./pages/handbook/OperationalGovernancePage'));
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
@@ -55,6 +59,18 @@ const App: React.FC = () => {
               <Route path="/project/:id" element={<ProjectDetails />} />
               <Route path="/careers" element={<CareersPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/handbook" element={<HandbookLayout />}>
+                <Route index element={<HRPolicyPage />} />
+                <Route path="hr-policy" element={<HRPolicyPage />} />
+                <Route path="brand-strategy" element={<BrandStrategyPage />} />
+                <Route path="operational-governance" element={<OperationalGovernancePage />} />
+              </Route>
+              <Route path="/admin" element={<HandbookLayout />}>
+                <Route index element={<HRPolicyPage />} />
+                <Route path="hr-policy" element={<HRPolicyPage />} />
+                <Route path="brand-strategy" element={<BrandStrategyPage />} />
+                <Route path="operational-governance" element={<OperationalGovernancePage />} />
+              </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

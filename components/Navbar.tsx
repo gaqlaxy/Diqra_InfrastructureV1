@@ -111,7 +111,11 @@ const Navbar: React.FC = () => {
             className={`text-xl md:text-2xl font-bold tracking-tighter uppercase font-display relative z-50 transition-colors group ${isMobileMenuOpen ? 'text-charcoal' : (isScrolled ? 'text-charcoal' : 'text-white')} flex items-center gap-2`}
           >
 
-            <img src="/assets/diqrawhite.png" alt="" srcset="" className="w-40" />
+            <img
+              src={isMobileMenuOpen || isScrolled ? "/assets/diqrablack.png" : "/assets/diqrawhite.png"}
+              alt="Diqra Architects"
+              className="w-40 transition-all duration-300"
+            />
           </Link>
 
           {/* Actions */}
