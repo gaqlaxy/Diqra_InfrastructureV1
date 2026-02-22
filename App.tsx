@@ -21,6 +21,12 @@ const HandbookLayout = React.lazy(() => import('./components/HandbookLayout'));
 const HRPolicyPage = React.lazy(() => import('./pages/handbook/HRPolicyPage'));
 const BrandStrategyPage = React.lazy(() => import('./pages/handbook/BrandStrategyPage'));
 const OperationalGovernancePage = React.lazy(() => import('./pages/handbook/OperationalGovernancePage'));
+const DashboardPage = React.lazy(() => import('./pages/handbook/DashboardPage'));
+const HRMLayout = React.lazy(() => import('./components/HRMLayout'));
+const HRMDashboard = React.lazy(() => import('./pages/hrm/HRMDashboard'));
+const EmployeeManagement = React.lazy(() => import('./pages/hrm/EmployeeManagement'));
+const TaskDelegation = React.lazy(() => import('./pages/hrm/TaskDelegation'));
+const AttendanceLeave = React.lazy(() => import('./pages/hrm/AttendanceLeave'));
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
@@ -64,12 +70,21 @@ const App: React.FC = () => {
                 <Route path="hr-policy" element={<HRPolicyPage />} />
                 <Route path="brand-strategy" element={<BrandStrategyPage />} />
                 <Route path="operational-governance" element={<OperationalGovernancePage />} />
+                <Route path="dashboard" element={<DashboardPage />} />
               </Route>
               <Route path="/admin" element={<HandbookLayout />}>
-                <Route index element={<HRPolicyPage />} />
+                <Route index element={<DashboardPage />} />
+                <Route path="dashboard" element={<DashboardPage />} />
                 <Route path="hr-policy" element={<HRPolicyPage />} />
                 <Route path="brand-strategy" element={<BrandStrategyPage />} />
                 <Route path="operational-governance" element={<OperationalGovernancePage />} />
+              </Route>
+              <Route path="/hrm" element={<HRMLayout />}>
+                <Route index element={<HRMDashboard />} />
+                <Route path="employees" element={<EmployeeManagement />} />
+                <Route path="tasks" element={<TaskDelegation />} />
+                <Route path="attendance" element={<AttendanceLeave />} />
+                <Route path="leave" element={<AttendanceLeave />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>

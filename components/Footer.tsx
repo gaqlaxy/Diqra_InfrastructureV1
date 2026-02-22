@@ -86,7 +86,7 @@ const Footer: React.FC = () => {
                     <div className="footer-col space-y-6">
                         <h4 className="text-xs font-bold text-accent-gold uppercase tracking-widest">Explore</h4>
                         <ul className="space-y-3">
-                            {['Projects', 'Services', 'Process', 'Careers', 'About', 'Handbook'].map((item) => (
+                            {['Projects', 'Services', 'Process', 'Careers', 'About', 'Handbook', 'HRM'].map((item) => (
                                 <li key={item}>
                                     <Link to={`/${item.toLowerCase()}`} className="text-sm text-white/60 hover:text-white transition-colors flex items-center gap-2 group w-fit">
                                         <span className="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>

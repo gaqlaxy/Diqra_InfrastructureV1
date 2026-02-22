@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { Book, ShieldCheck, Users, FileText, ChevronRight, Target, GanttChartSquare } from 'lucide-react';
+import { Book, ShieldCheck, Users, FileText, ChevronRight, Target, GanttChartSquare, BarChart3 } from 'lucide-react';
 import HandbookAuth from './HandbookAuth';
 
 const HandbookLayout: React.FC = () => {
@@ -22,6 +22,12 @@ const HandbookLayout: React.FC = () => {
             path: '/handbook/operational-governance',
             icon: <GanttChartSquare size={18} />,
             id: 'operational-governance'
+        },
+        {
+            name: 'Financial Dashboard',
+            path: '/handbook/dashboard',
+            icon: <BarChart3 size={18} />,
+            id: 'dashboard'
         },
         // Placeholders for future sections
         {
