@@ -29,6 +29,25 @@ const TaskDelegation: React.FC = () => {
         return deadDate < today;
     };
 
+    const addTask = () => {
+        const newId = `T-${String(tasksList.length + 1).padStart(3, '0')}`;
+        const newTask: Task = {
+            id: newId,
+            title: 'New Assignment',
+            assignee: 'Unassigned',
+            deadline: '2026-03-01',
+            status: 'Pending',
+            priority: 'Medium',
+            category: 'Operational'
+        };
+        setTasksList([...tasksList, newTask]);
+    };
+
+    const deleteTask = (index: number) => {
+        const updated = tasksList.filter((_, i) => i !== index);
+        setTasksList(updated);
+    };
+
     const handleUpdate = (index: number, field: keyof Task, value: string) => {
         const updated = [...tasksList];
         updated[index] = { ...updated[index], [field]: value } as Task;
@@ -36,7 +55,7 @@ const TaskDelegation: React.FC = () => {
     };
 
     const copyData = () => {
-        const code = `export const tasks = ${JSON.stringify(tasksList, null, 2)};`;
+        const code = `export const tasks: Task[] = ${JSON.stringify(tasksList, null, 2)};`;
         navigator.clipboard.writeText(code);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
@@ -56,7 +75,10 @@ const TaskDelegation: React.FC = () => {
                     >
                         {isEditMode ? <X size={20} /> : <Settings size={20} />}
                     </button>
-                    <button className="flex items-center gap-2 bg-charcoal text-white px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-primary transition-all shadow-xl">
+                    <button
+                        onClick={addTask}
+                        className="flex items-center gap-2 bg-charcoal text-white px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-primary transition-all shadow-xl"
+                    >
                         <Plus size={16} className="text-primary" />
                         Assign New Task
                     </button>
@@ -76,48 +98,56 @@ const TaskDelegation: React.FC = () => {
                         </button>
                     </div>
 
-                    <div className="space-y-4 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
+                    <div className="space-y-4 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar">
                         {tasksList.map((task, i) => (
-                            <div key={task.id} className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-white/5 border border-white/5 rounded-xl">
-                                <div className="md:col-span-1">
-                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Title</label>
-                                    <input
-                                        type="text"
-                                        value={task.title}
-                                        onChange={(e) => handleUpdate(i, 'title', e.target.value)}
-                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
-                                    />
+                            <div key={i} className="flex gap-4 items-center">
+                                <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-white/5 border border-white/5 rounded-xl">
+                                    <div className="md:col-span-1">
+                                        <label className="text-[9px] font-black text-primary uppercase mb-1 block">Title</label>
+                                        <input
+                                            type="text"
+                                            value={task.title}
+                                            onChange={(e) => handleUpdate(i, 'title', e.target.value)}
+                                            className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-[9px] font-black text-primary uppercase mb-1 block">Assignee</label>
+                                        <input
+                                            type="text"
+                                            value={task.assignee}
+                                            onChange={(e) => handleUpdate(i, 'assignee', e.target.value)}
+                                            className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-[9px] font-black text-primary uppercase mb-1 block">Deadline</label>
+                                        <input
+                                            type="text"
+                                            value={task.deadline}
+                                            onChange={(e) => handleUpdate(i, 'deadline', e.target.value)}
+                                            className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-[9px] font-black text-primary uppercase mb-1 block">Status</label>
+                                        <select
+                                            value={task.status}
+                                            onChange={(e) => handleUpdate(i, 'status', e.target.value)}
+                                            className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                        >
+                                            <option value="Pending">Pending</option>
+                                            <option value="In Progress">In Progress</option>
+                                            <option value="Completed">Completed</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Assignee</label>
-                                    <input
-                                        type="text"
-                                        value={task.assignee}
-                                        onChange={(e) => handleUpdate(i, 'assignee', e.target.value)}
-                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Deadline</label>
-                                    <input
-                                        type="text"
-                                        value={task.deadline}
-                                        onChange={(e) => handleUpdate(i, 'deadline', e.target.value)}
-                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Status</label>
-                                    <select
-                                        value={task.status}
-                                        onChange={(e) => handleUpdate(i, 'status', e.target.value)}
-                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
-                                    >
-                                        <option value="Pending">Pending</option>
-                                        <option value="In Progress">In Progress</option>
-                                        <option value="Completed">Completed</option>
-                                    </select>
-                                </div>
+                                <button
+                                    onClick={() => deleteTask(i)}
+                                    className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all border border-red-500/20"
+                                >
+                                    <X size={18} />
+                                </button>
                             </div>
                         ))}
                     </div>
@@ -150,7 +180,7 @@ const TaskDelegation: React.FC = () => {
                                         {task.category}
                                     </div>
                                     <div className={`flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wider ${task.priority === 'Critical' ? 'text-red-500' :
-                                            task.priority === 'High' ? 'text-orange-500' : 'text-blue-500'
+                                        task.priority === 'High' ? 'text-orange-500' : 'text-blue-500'
                                         }`}>
                                         <AlertCircle size={10} />
                                         {task.priority} Priority

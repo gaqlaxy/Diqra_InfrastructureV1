@@ -10,6 +10,7 @@ import {
     X,
     Settings,
     Copy,
+    Plus,
     ArrowUpRight
 } from 'lucide-react';
 import {
@@ -26,6 +27,42 @@ const AttendanceLeave: React.FC = () => {
     const [isEditMode, setIsEditMode] = useState(false);
     const [copied, setCopied] = useState(false);
 
+    const addAttendance = () => {
+        const newId = `ATT-${String(attendance.length + 1).padStart(3, '0')}`;
+        const newRecord: AttendanceRecord = {
+            id: newId,
+            name: 'New Entry',
+            time: '09:00 AM',
+            location: 'Main Office',
+            status: 'On-Time'
+        };
+        setAttendance([...attendance, newRecord]);
+    };
+
+    const addLeave = () => {
+        const newId = `LR-${String(leaves.length + 1).padStart(3, '0')}`;
+        const newLeave: LeaveRequest = {
+            id: newId,
+            name: 'Employee Name',
+            type: 'Annual Leave',
+            duration: '1 Day',
+            dates: '2026-03-01',
+            status: 'Pending',
+            reason: 'Add reason here'
+        };
+        setLeaves([...leaves, newLeave]);
+    };
+
+    const deleteAttendance = (index: number) => {
+        const updated = attendance.filter((_, i) => i !== index);
+        setAttendance(updated);
+    };
+
+    const deleteLeave = (index: number) => {
+        const updated = leaves.filter((_, i) => i !== index);
+        setLeaves(updated);
+    };
+
     const handleAttendanceUpdate = (index: number, field: keyof AttendanceRecord, value: string) => {
         const updated = [...attendance];
         updated[index] = { ...updated[index], [field]: value } as AttendanceRecord;
@@ -41,7 +78,8 @@ const AttendanceLeave: React.FC = () => {
     const copyData = () => {
         const data = activeTab === 'attendance' ? attendance : leaves;
         const varName = activeTab === 'attendance' ? 'attendanceRecords' : 'leaveRequests';
-        const code = `export const ${varName} = ${JSON.stringify(data, null, 2)};`;
+        const interfaceName = activeTab === 'attendance' ? 'AttendanceRecord[]' : 'LeaveRequest[]';
+        const code = `export const ${varName}: ${interfaceName} = ${JSON.stringify(data, null, 2)};`;
         navigator.clipboard.writeText(code);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
@@ -61,6 +99,13 @@ const AttendanceLeave: React.FC = () => {
                         className={`p-3 border rounded-xl transition-all ${isEditMode ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : 'bg-white text-charcoal border-slate-200 hover:border-primary/40'}`}
                     >
                         {isEditMode ? <X size={20} /> : <Settings size={20} />}
+                    </button>
+                    <button
+                        onClick={activeTab === 'attendance' ? addAttendance : addLeave}
+                        className="flex items-center gap-2 bg-charcoal text-white px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-primary transition-all shadow-xl"
+                    >
+                        <Plus size={16} className="text-primary" />
+                        {activeTab === 'attendance' ? 'Add Record' : 'Add Request'}
                     </button>
                     <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200 shadow-sm">
                         <button
@@ -96,83 +141,91 @@ const AttendanceLeave: React.FC = () => {
                         </button>
                     </div>
 
-                    <div className="space-y-4 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
+                    <div className="space-y-4 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar">
                         {(activeTab === 'attendance' ? attendance : leaves).map((item, i) => (
-                            <div key={item.id} className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-white/5 border border-white/5 rounded-xl">
-                                <div className="md:col-span-1">
-                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Name</label>
-                                    <input
-                                        type="text"
-                                        value={item.name}
-                                        onChange={(e) => activeTab === 'attendance' ? handleAttendanceUpdate(i, 'name', e.target.value) : handleLeaveUpdate(i, 'name', e.target.value)}
-                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
-                                    />
+                            <div key={i} className="flex gap-4 items-center">
+                                <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-white/5 border border-white/5 rounded-xl">
+                                    <div className="md:col-span-1">
+                                        <label className="text-[9px] font-black text-primary uppercase mb-1 block">Name</label>
+                                        <input
+                                            type="text"
+                                            value={item.name}
+                                            onChange={(e) => activeTab === 'attendance' ? handleAttendanceUpdate(i, 'name', e.target.value) : handleLeaveUpdate(i, 'name', e.target.value)}
+                                            className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                        />
+                                    </div>
+                                    {activeTab === 'attendance' ? (
+                                        <>
+                                            <div>
+                                                <label className="text-[9px] font-black text-primary uppercase mb-1 block">Time</label>
+                                                <input
+                                                    type="text"
+                                                    value={(item as AttendanceRecord).time}
+                                                    onChange={(e) => handleAttendanceUpdate(i, 'time', e.target.value)}
+                                                    className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="text-[9px] font-black text-primary uppercase mb-1 block">Location</label>
+                                                <input
+                                                    type="text"
+                                                    value={(item as AttendanceRecord).location}
+                                                    onChange={(e) => handleAttendanceUpdate(i, 'location', e.target.value)}
+                                                    className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                                />
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div>
+                                                <label className="text-[9px] font-black text-primary uppercase mb-1 block">Dates</label>
+                                                <input
+                                                    type="text"
+                                                    value={(item as LeaveRequest).dates}
+                                                    onChange={(e) => handleLeaveUpdate(i, 'dates', e.target.value)}
+                                                    className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="text-[9px] font-black text-primary uppercase mb-1 block">Type</label>
+                                                <input
+                                                    type="text"
+                                                    value={(item as LeaveRequest).type}
+                                                    onChange={(e) => handleLeaveUpdate(i, 'type', e.target.value)}
+                                                    className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                                />
+                                            </div>
+                                        </>
+                                    )}
+                                    <div>
+                                        <label className="text-[9px] font-black text-primary uppercase mb-1 block">Status</label>
+                                        <select
+                                            value={item.status}
+                                            onChange={(e) => activeTab === 'attendance' ? handleAttendanceUpdate(i, 'status', e.target.value) : handleLeaveUpdate(i, 'status', e.target.value)}
+                                            className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                        >
+                                            {activeTab === 'attendance' ? (
+                                                <>
+                                                    <option value="On-Time">On-Time</option>
+                                                    <option value="Late">Late</option>
+                                                    <option value="Absent">Absent</option>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <option value="Pending">Pending</option>
+                                                    <option value="Approved">Approved</option>
+                                                    <option value="Declined">Declined</option>
+                                                </>
+                                            )}
+                                        </select>
+                                    </div>
                                 </div>
-                                {activeTab === 'attendance' ? (
-                                    <>
-                                        <div>
-                                            <label className="text-[9px] font-black text-primary uppercase mb-1 block">Time</label>
-                                            <input
-                                                type="text"
-                                                value={(item as AttendanceRecord).time}
-                                                onChange={(e) => handleAttendanceUpdate(i, 'time', e.target.value)}
-                                                className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="text-[9px] font-black text-primary uppercase mb-1 block">Location</label>
-                                            <input
-                                                type="text"
-                                                value={(item as AttendanceRecord).location}
-                                                onChange={(e) => handleAttendanceUpdate(i, 'location', e.target.value)}
-                                                className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
-                                            />
-                                        </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <div>
-                                            <label className="text-[9px] font-black text-primary uppercase mb-1 block">Dates</label>
-                                            <input
-                                                type="text"
-                                                value={(item as LeaveRequest).dates}
-                                                onChange={(e) => handleLeaveUpdate(i, 'dates', e.target.value)}
-                                                className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="text-[9px] font-black text-primary uppercase mb-1 block">Type</label>
-                                            <input
-                                                type="text"
-                                                value={(item as LeaveRequest).type}
-                                                onChange={(e) => handleLeaveUpdate(i, 'type', e.target.value)}
-                                                className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
-                                            />
-                                        </div>
-                                    </>
-                                )}
-                                <div>
-                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Status</label>
-                                    <select
-                                        value={item.status}
-                                        onChange={(e) => activeTab === 'attendance' ? handleAttendanceUpdate(i, 'status', e.target.value) : handleLeaveUpdate(i, 'status', e.target.value)}
-                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
-                                    >
-                                        {activeTab === 'attendance' ? (
-                                            <>
-                                                <option value="On-Time">On-Time</option>
-                                                <option value="Late">Late</option>
-                                                <option value="Absent">Absent</option>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <option value="Pending">Pending</option>
-                                                <option value="Approved">Approved</option>
-                                                <option value="Declined">Declined</option>
-                                            </>
-                                        )}
-                                    </select>
-                                </div>
+                                <button
+                                    onClick={() => activeTab === 'attendance' ? deleteAttendance(i) : deleteLeave(i)}
+                                    className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all border border-red-500/20"
+                                >
+                                    <X size={18} />
+                                </button>
                             </div>
                         ))}
                     </div>
@@ -243,7 +296,7 @@ const AttendanceLeave: React.FC = () => {
                                             <td className="px-8 py-5 text-[10px] font-bold text-slate-400 uppercase tracking-tight">{rec.location}</td>
                                             <td className="px-8 py-5">
                                                 <span className={`text-[9px] font-black uppercase tracking-widest ${rec.status === 'On-Time' ? 'text-green-600' :
-                                                        rec.status === 'Late' ? 'text-orange-500' : 'text-red-500'
+                                                    rec.status === 'Late' ? 'text-orange-500' : 'text-red-500'
                                                     }`}>
                                                     {rec.status}
                                                 </span>

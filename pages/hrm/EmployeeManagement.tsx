@@ -27,6 +27,26 @@ const EmployeeManagement: React.FC = () => {
         (selectedDept === 'All Departments' || emp.dept === selectedDept)
     );
 
+    const addEmployee = () => {
+        const newId = `DI-${String(employeesList.length + 1).padStart(3, '0')}`;
+        const newEmp: Employee = {
+            id: newId,
+            name: 'New Employee',
+            role: 'Staff',
+            dept: 'Design',
+            email: 'email@diqra.com',
+            phone: '+91 00XXX-XXXXX',
+            status: 'Active',
+            joinDate: 'Feb 2026'
+        };
+        setEmployeesList([...employeesList, newEmp]);
+    };
+
+    const deleteEmployee = (index: number) => {
+        const updated = employeesList.filter((_, i) => i !== index);
+        setEmployeesList(updated);
+    };
+
     const handleUpdate = (index: number, field: keyof Employee, value: string) => {
         const updated = [...employeesList];
         updated[index] = { ...updated[index], [field]: value } as Employee;
@@ -34,7 +54,7 @@ const EmployeeManagement: React.FC = () => {
     };
 
     const copyData = () => {
-        const code = `export const employees = ${JSON.stringify(employeesList, null, 2)};`;
+        const code = `export const employees: Employee[] = ${JSON.stringify(employeesList, null, 2)};`;
         navigator.clipboard.writeText(code);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
@@ -54,7 +74,10 @@ const EmployeeManagement: React.FC = () => {
                     >
                         {isEditMode ? <X size={20} /> : <Settings size={20} />}
                     </button>
-                    <button className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-charcoal transition-all shadow-lg shadow-primary/20">
+                    <button
+                        onClick={addEmployee}
+                        className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-charcoal transition-all shadow-lg shadow-primary/20"
+                    >
                         <Plus size={16} />
                         Add New Employee
                     </button>
@@ -77,48 +100,58 @@ const EmployeeManagement: React.FC = () => {
                         Modify staff details below and click "Copy Updated Data" to save permanently in hrmData.ts.
                     </p>
 
-                    <div className="space-y-4 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
+                    <div className="space-y-4 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar">
                         {employeesList.map((emp, i) => (
-                            <div key={emp.id} className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-white/5 border border-white/5 rounded-xl">
-                                <div className="md:col-span-1">
-                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Full Name</label>
-                                    <input
-                                        type="text"
-                                        value={emp.name}
-                                        onChange={(e) => handleUpdate(i, 'name', e.target.value)}
-                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
-                                    />
+                            <div key={i} className="flex gap-4 items-center">
+                                <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-white/5 border border-white/5 rounded-xl">
+                                    <div className="md:col-span-1">
+                                        <label className="text-[9px] font-black text-primary uppercase mb-1 block">Full Name</label>
+                                        <input
+                                            type="text"
+                                            value={emp.name}
+                                            onChange={(e) => handleUpdate(i, 'name', e.target.value)}
+                                            className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-[9px] font-black text-primary uppercase mb-1 block">Role</label>
+                                        <input
+                                            type="text"
+                                            value={emp.role}
+                                            onChange={(e) => handleUpdate(i, 'role', e.target.value)}
+                                            className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-[9px] font-black text-primary uppercase mb-1 block">Email</label>
+                                        <input
+                                            type="email"
+                                            value={emp.email}
+                                            onChange={(e) => handleUpdate(i, 'email', e.target.value)}
+                                            className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                        />
+                                    </div>
+                                    <div className="flex gap-2 items-end">
+                                        <div className="flex-1">
+                                            <label className="text-[9px] font-black text-primary uppercase mb-1 block">Status</label>
+                                            <select
+                                                value={emp.status}
+                                                onChange={(e) => handleUpdate(i, 'status', e.target.value)}
+                                                className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
+                                            >
+                                                <option value="Active">Active</option>
+                                                <option value="On Leave">On Leave</option>
+                                                <option value="Terminated">Terminated</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Role</label>
-                                    <input
-                                        type="text"
-                                        value={emp.role}
-                                        onChange={(e) => handleUpdate(i, 'role', e.target.value)}
-                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Email</label>
-                                    <input
-                                        type="email"
-                                        value={emp.email}
-                                        onChange={(e) => handleUpdate(i, 'email', e.target.value)}
-                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="text-[9px] font-black text-primary uppercase mb-1 block">Status</label>
-                                    <select
-                                        value={emp.status}
-                                        onChange={(e) => handleUpdate(i, 'status', e.target.value)}
-                                        className="w-full bg-charcoal border border-white/10 p-2 text-[11px] text-white rounded-lg focus:border-primary outline-none transition-all"
-                                    >
-                                        <option value="Active">Active</option>
-                                        <option value="On Leave">On Leave</option>
-                                        <option value="Terminated">Terminated</option>
-                                    </select>
-                                </div>
+                                <button
+                                    onClick={() => deleteEmployee(i)}
+                                    className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all border border-red-500/20"
+                                >
+                                    <X size={18} />
+                                </button>
                             </div>
                         ))}
                     </div>

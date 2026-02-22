@@ -85,20 +85,20 @@ const Hero: React.FC = () => {
         <div ref={textRef} className="max-w-5xl">
 
 
-          <h1 className="font-display font-bold text-4xl md:text-7xl lg:text-8xl text-white leading-tight md:leading-[1.05] uppercase tracking-tight mb-6 md:mb-8">
+          <h1 className="font-display font-bold text-3xl md:text-6xl lg:text-7xl text-white leading-tight md:leading-[1.05] uppercase tracking-tight mb-4 md:mb-5">
             <span className="reveal-text block opacity-0 translate-y-[100px]">Engineering</span>
             <span className="reveal-text block opacity-0 translate-y-[100px]">Infrastructure</span>
             <span className="reveal-text block opacity-0 translate-y-[100px] text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">That Powers Growth.</span>
           </h1>
 
-          <p className="reveal-text text-white/80 text-base md:text-xl font-light max-w-2xl mb-8 md:mb-12 leading-relaxed border-l-2 border-white/20 pl-4 md:pl-6 opacity-0 translate-y-[100px]">
+          <p className="reveal-text text-white/80 text-sm md:text-lg font-light max-w-2xl mb-6 md:mb-8 leading-relaxed border-l-2 border-white/20 pl-4 md:pl-6 opacity-0 translate-y-[100px]">
             Delivering commercial, government, and industrial construction projects with precision, scale, and uncompromised quality.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 md:gap-6">
             <Link
               to="/#projects"
-              className="hero-btn group relative inline-flex items-center justify-center gap-3 bg-primary text-white px-8 py-4 md:px-10 md:py-5 text-sm font-bold uppercase tracking-widest overflow-hidden transition-all hover:text-white opacity-0 translate-y-[20px] shadow-lg hover:shadow-primary/20"
+              className="hero-btn group relative inline-flex items-center justify-center gap-3 bg-primary text-white px-6 py-3.5 md:px-8 md:py-4.5 text-sm font-bold uppercase tracking-widest overflow-hidden transition-all hover:text-white opacity-0 translate-y-[20px] shadow-lg hover:shadow-primary/20"
               aria-label="View our projects"
             >
               <span className="relative z-10 flex items-center gap-3">
@@ -110,7 +110,7 @@ const Hero: React.FC = () => {
 
             <Link
               to="/contact"
-              className="hero-btn group relative inline-flex items-center justify-center gap-3 border border-white/30 text-white px-8 py-4 md:px-10 md:py-5 text-sm font-bold uppercase tracking-widest overflow-hidden transition-all hover:border-white hover:text-charcoal opacity-0 translate-y-[20px]"
+              className="hero-btn group relative inline-flex items-center justify-center gap-3 border border-white/30 text-white px-6 py-3.5 md:px-8 md:py-4.5 text-sm font-bold uppercase tracking-widest overflow-hidden transition-all hover:border-white hover:text-charcoal opacity-0 translate-y-[20px]"
               aria-label="Request a proposal"
             >
               <span className="relative z-10 flex items-center gap-3">
