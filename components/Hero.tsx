@@ -125,13 +125,13 @@ const Hero: React.FC = () => {
 
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 scroll-indicator opacity-0 translate-y-4">
         <div className="flex flex-col items-center animate-bounce">
-          <span className="text-[10px] uppercase tracking-widest text-white/50 mb-2">Scroll</span>
+          <span className="text-[10px] uppercase tracking-widest text-white/50 mb-2 font-technical">Scroll</span>
           <ChevronDown size={20} className="text-white/50" />
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full border-t border-white/10 bg-charcoal/80 backdrop-blur-sm py-4 md:py-6 hidden md:block">
-        <div className="container mx-auto px-12 flex justify-between items-center text-white/50 text-xs font-bold tracking-widest uppercase">
+      <div className="absolute bottom-0 left-0 w-full border-t border-white/10 bg-charcoal/80 backdrop-blur-md py-4 md:py-6 hidden md:block">
+        <div className="container mx-auto px-12 flex justify-between items-center text-white/50 text-[10px] font-bold tracking-[0.2em] uppercase font-technical">
           <span>ISO 9001:2015 Certified</span>
           <div className="flex gap-12">
             <span>Safety First Policy</span>

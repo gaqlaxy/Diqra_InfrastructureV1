@@ -17,16 +17,56 @@
 
 @layer base {
     body {
-        font-family: "Geist Mono", sans-serif;
+        font-family: "Inter", sans-serif;
         @apply overflow-x-hidden bg-background-light text-charcoal antialiased selection:bg-primary selection:text-white;
     }
 
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .font-display {
+        font-family: "Outfit", sans-serif;
+    }
+
+    .font-technical {
+        font-family: "Geist Mono", monospace;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-charcoal;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-primary/40 rounded-full transition-colors hover:bg-primary/60;
+}
+
+/* Hide Scrollbar Utility */
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
 }
 
 /* Custom Utilities */
 @layer utilities {
-    .font-serif {
-        font-family: "Geist Mono", sans-serif;
+    .glass {
+        @apply bg-white/10 backdrop-blur-md border border-white/20;
+    }
+
+    .glass-dark {
+        @apply bg-charcoal/40 backdrop-blur-lg border border-white/10;
     }
 
     .text-spaced {
@@ -34,13 +74,7 @@
         text-transform: uppercase;
     }
 
-    /* Hide Scrollbar but allow scroll */
-    .hide-scrollbar::-webkit-scrollbar {
-        display: none;
-    }
-
-    .hide-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
+    .text-stroke {
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
     }
 }

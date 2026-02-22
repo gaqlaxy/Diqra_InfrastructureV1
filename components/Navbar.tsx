@@ -123,10 +123,10 @@ const Navbar: React.FC = () => {
             {/* Contact Button (Desktop Only - lg+) */}
             <Link
               to="/contact"
-              className={`hidden lg:inline-flex items-center justify-center text-xs font-bold uppercase tracking-widest px-6 py-2.5 border transition-all duration-300 hover:-translate-y-0.5 ${isMobileMenuOpen
+              className={`hidden lg:inline-flex items-center justify-center text-[10px] font-bold uppercase tracking-widest px-6 py-2.5 border transition-all duration-300 hover:-translate-y-0.5 font-technical ${isMobileMenuOpen
                 ? 'border-charcoal/20 text-charcoal hover:bg-charcoal hover:text-white'
                 : (isScrolled
-                  ? 'border-charcoal text-charcoal hover:bg-charcoal hover:text-white'
+                  ? 'border-primary text-primary hover:bg-primary hover:text-white'
                   : 'border-white/20 text-white bg-white/5 hover:bg-white hover:text-charcoal')
                 }`}
             >
@@ -136,10 +136,10 @@ const Navbar: React.FC = () => {
             {/* Menu Trigger */}
             <button
               onClick={toggleMenu}
-              className={`flex items-center gap-3 text-xs font-bold uppercase tracking-widest px-5 py-2.5 border transition-all duration-300 group hover:-translate-y-0.5 ${isMobileMenuOpen
+              className={`flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest px-5 py-2.5 border transition-all duration-300 group hover:-translate-y-0.5 font-technical ${isMobileMenuOpen
                 ? 'bg-charcoal text-white border-charcoal hover:bg-charcoal/90'
                 : (isScrolled
-                  ? 'border-charcoal text-charcoal hover:bg-charcoal hover:text-white'
+                  ? 'border-primary text-primary hover:bg-primary hover:text-white'
                   : 'border-white/20 text-white bg-white/5 hover:bg-white hover:text-charcoal')
                 }`}
             >
@@ -174,10 +174,10 @@ const Navbar: React.FC = () => {
               {/* Card Content Top */}
               <div className="relative z-10 flex justify-between items-start">
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-accent-gold">Dec 1, 2024</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-accent-gold font-technical">Dec 1, 2024</span>
                   <div className="h-8 w-px bg-white/20"></div>
                 </div>
-                <div className="flex items-center gap-2 opacity-50">
+                <div className="flex items-center gap-2 opacity-50 font-technical">
                   <div className="w-2 h-2 rounded-full bg-white animate-pulse"></div>
                   <span className="text-[10px] font-bold uppercase tracking-widest">Live Site</span>
                 </div>
@@ -188,20 +188,20 @@ const Navbar: React.FC = () => {
                 <div className="grid grid-cols-2 gap-8 mb-8 border-b border-white/20 pb-8">
                   <div>
                     <span className="block text-2xl font-bold font-display text-white mb-1">87%</span>
-                    <span className="block text-[9px] font-bold uppercase tracking-widest text-white/60">Efficiency Gain</span>
+                    <span className="block text-[9px] font-bold uppercase tracking-widest text-white/60 font-technical">Efficiency Gain</span>
                   </div>
                   <div>
                     <span className="block text-2xl font-bold font-display text-white mb-1">3X</span>
-                    <span className="block text-[9px] font-bold uppercase tracking-widest text-white/60">Faster Delivery</span>
+                    <span className="block text-[9px] font-bold uppercase tracking-widest text-white/60 font-technical">Faster Delivery</span>
                   </div>
                 </div>
 
-                <span className="text-[9px] font-bold uppercase tracking-widest text-accent-gold mb-3 block">Featured Case Study</span>
-                <h3 className="text-lg font-display font-bold leading-tight mb-6 max-w-[90%]">
+                <span className="text-[9px] font-bold uppercase tracking-widest text-accent-gold mb-3 block font-technical">Featured Case Study</span>
+                <h3 className="text-lg font-display font-bold leading-tight mb-6 max-w-[90%] uppercase tracking-tight">
                   HOW WE HELP COMPANIES SCALE OPERATIONS WITH INFRASTRUCTURE.
                 </h3>
 
-                <Link to="/projects" onClick={() => setIsMobileMenuOpen(false)} className="inline-flex items-center justify-center w-12 h-12 bg-[#CCFF00] text-charcoal hover:bg-white transition-all duration-300 hover:scale-110">
+                <Link to="/projects" onClick={() => setIsMobileMenuOpen(false)} className="inline-flex items-center justify-center w-12 h-12 bg-primary text-white hover:bg-white hover:text-charcoal transition-all duration-300 hover:scale-110 shadow-xl">
                   <ArrowUpRight size={20} />
                 </Link>
               </div>
@@ -236,15 +236,15 @@ const Navbar: React.FC = () => {
             {/* Footer Info - Pinned to Bottom on Desktop */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-4 border-t border-charcoal/10 pt-6 pb-6 md:pb-10 mt-auto">
               <div className="menu-footer-item">
-                <span className="block text-[10px] font-bold text-slate-gray uppercase tracking-widest mb-2">[ Phone ]</span>
-                <a href="tel:+911145678900" className="text-base font-bold text-charcoal hover:underline decoration-2 underline-offset-4 decoration-primary">
+                <span className="block text-[10px] font-bold text-slate-gray uppercase tracking-widest mb-2 font-technical">[ Phone ]</span>
+                <a href="tel:+911145678900" className="text-base font-bold text-charcoal hover:text-primary transition-colors">
                   +91 (11) 4567-8900
                 </a>
               </div>
 
               <div className="menu-footer-item">
-                <span className="block text-[10px] font-bold text-slate-gray uppercase tracking-widest mb-2">[ Email ]</span>
-                <a href="mailto:sales@diqra.com" className="inline-block text-lg md:text-xl font-black text-charcoal bg-[#CCFF00] px-1 hover:px-4 transition-all uppercase italic duration-300">
+                <span className="block text-[10px] font-bold text-slate-gray uppercase tracking-widest mb-2 font-technical">[ Email ]</span>
+                <a href="mailto:sales@diqra.com" className="inline-block text-lg md:text-xl font-black text-white bg-primary px-4 py-1 hover:bg-charcoal transition-all uppercase italic duration-300 shadow-lg">
                   SALES@DIQRA.COM
                 </a>
               </div>
@@ -252,23 +252,23 @@ const Navbar: React.FC = () => {
               <div className="lg:col-span-2 menu-footer-item mt-4 hidden lg:block">
                 <div className="flex justify-between items-end">
                   <div>
-                    <span className="block text-[10px] font-bold text-slate-gray uppercase tracking-widest mb-4">[ Socials ]</span>
-                    <div className="flex gap-8 text-xs font-bold uppercase tracking-widest text-charcoal">
+                    <span className="block text-[10px] font-bold text-slate-gray uppercase tracking-widest mb-4 font-technical">[ Socials ]</span>
+                    <div className="flex gap-8 text-[10px] font-bold uppercase tracking-widest text-charcoal font-technical">
                       <div className="flex items-center gap-2 group cursor-pointer hover:-translate-y-1 transition-transform">
                         <span className="text-slate-gray group-hover:text-primary">1.0</span>
-                        <span className="group-hover:underline decoration-primary underline-offset-4">LinkedIn</span>
+                        <span className="group-hover:text-primary transition-colors">LinkedIn</span>
                       </div>
                       <div className="flex items-center gap-2 group cursor-pointer hover:-translate-y-1 transition-transform">
                         <span className="text-slate-gray group-hover:text-primary">1.1</span>
-                        <span className="group-hover:underline decoration-primary underline-offset-4">Instagram</span>
+                        <span className="group-hover:text-primary transition-colors">Instagram</span>
                       </div>
                       <div className="flex items-center gap-2 group cursor-pointer hover:-translate-y-1 transition-transform">
                         <span className="text-slate-gray group-hover:text-primary">1.2</span>
-                        <span className="group-hover:underline decoration-primary underline-offset-4">Twitter (X)</span>
+                        <span className="group-hover:text-primary transition-colors">Twitter (X)</span>
                       </div>
                     </div>
                   </div>
-                  <span className="text-[10px] font-bold text-slate-gray uppercase tracking-widest">© 2024 Diqra</span>
+                  <span className="text-[10px] font-bold text-slate-gray uppercase tracking-widest font-technical">© 2024 Diqra</span>
                 </div>
               </div>
 

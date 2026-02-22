@@ -50,8 +50,8 @@ const Footer: React.FC = () => {
 
                 {/* Massive Brand Header */}
                 <div className="mb-20 border-b border-white/10 pb-12 footer-brand">
-                    <h1 className="font-display font-bold text-[10vw] md:text-[12vw] leading-[0.8] tracking-tighter text-transparent bg-clip-text bg-linear-to-b from-white to-white/20 select-none">
-                        DIQRA<span className="text-stroke text-white/5">INFRA.</span>
+                    <h1 className="font-display font-bold text-[10vw] md:text-[12vw] leading-[0.8] tracking-tighter text-transparent text-stroke select-none">
+                        DIQRA<span className="opacity-10">INFRA.</span>
                     </h1>
                 </div>
 
@@ -60,7 +60,7 @@ const Footer: React.FC = () => {
 
                     {/* Column 1: Address */}
                     <div className="footer-col space-y-6">
-                        <h4 className="text-xs font-bold text-accent-gold uppercase tracking-widest">Headquarters</h4>
+                        <h4 className="text-[10px] font-bold text-accent-gold uppercase tracking-[0.2em] font-technical">Headquarters</h4>
                         <address className="not-italic text-sm text-white/60 leading-relaxed hover:text-white transition-colors duration-300">
                             Plot No. 45, Industrial Area Ph-II,<br />
                             Okhla, New Delhi 110020<br />
@@ -84,7 +84,7 @@ const Footer: React.FC = () => {
 
                     {/* Column 2: Navigation */}
                     <div className="footer-col space-y-6">
-                        <h4 className="text-xs font-bold text-accent-gold uppercase tracking-widest">Explore</h4>
+                        <h4 className="text-[10px] font-bold text-accent-gold uppercase tracking-[0.2em] font-technical">Explore</h4>
                         <ul className="space-y-3">
                             {['Projects', 'Services', 'Process', 'Careers', 'About', 'Handbook', 'HRM'].map((item) => (
                                 <li key={item}>
@@ -102,7 +102,7 @@ const Footer: React.FC = () => {
 
                     {/* Column 3: Socials */}
                     <div className="footer-col space-y-6">
-                        <h4 className="text-xs font-bold text-accent-gold uppercase tracking-widest">Social</h4>
+                        <h4 className="text-[10px] font-bold text-accent-gold uppercase tracking-[0.2em] font-technical">Social</h4>
                         <ul className="space-y-3">
                             {['LinkedIn', 'Instagram', 'Twitter (X)', 'Behance'].map((item) => (
                                 <li key={item}>
@@ -122,16 +122,16 @@ const Footer: React.FC = () => {
                     <div className="footer-col flex flex-col justify-between items-start md:items-end">
                         <button
                             onClick={scrollToTop}
-                            className="group flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-white hover:text-primary transition-colors"
+                            className="group flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-white hover:text-primary transition-colors font-technical"
                         >
                             Back to Top
-                            <div className="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center group-hover:bg-white group-hover:border-white transition-all bg-white/5 relative overflow-hidden">
-                                <ArrowUp size={18} className="text-white group-hover:text-charcoal transition-colors relative z-10 group-hover:-translate-y-1 group-hover:scale-110 duration-300" />
+                            <div className="w-12 h-12 border border-white/10 rounded-full flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-all glass-dark relative overflow-hidden shadow-2xl">
+                                <ArrowUp size={18} className="text-white relative z-10 group-hover:-translate-y-1 group-hover:scale-110 duration-300" />
                             </div>
                         </button>
 
                         <div className="mt-8 md:mt-0 text-right hidden md:block">
-                            <p className="text-[10px] text-white/30 uppercase tracking-widest max-w-[150px]">
+                            <p className="text-[9px] text-white/20 uppercase tracking-[0.2em] max-w-[150px] font-technical italic">
                                 Designing the world of tomorrow.
                             </p>
                         </div>
@@ -139,12 +139,12 @@ const Footer: React.FC = () => {
                 </div>
 
                 {/* Footer Bottom */}
-                <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-white/30 uppercase tracking-[0.2em] footer-col">
+                <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[9px] text-white/20 uppercase tracking-[0.2em] footer-col font-technical">
                     <p>&copy; 2024 Diqra Architects. ISO 9001 Certified.</p>
                     <div className="flex gap-8">
-                        <a href="#" className="hover:text-white transition-colors hover:underline decoration-white/30 underline-offset-4">Privacy</a>
-                        <a href="#" className="hover:text-white transition-colors hover:underline decoration-white/30 underline-offset-4">Terms</a>
-                        <a href="#" className="hover:text-white transition-colors hover:underline decoration-white/30 underline-offset-4">Sitemap</a>
+                        <a href="#" className="hover:text-white transition-colors">Privacy</a>
+                        <a href="#" className="hover:text-white transition-colors">Terms</a>
+                        <a href="#" className="hover:text-white transition-colors">Sitemap</a>
                     </div>
                 </div>
             </div>
