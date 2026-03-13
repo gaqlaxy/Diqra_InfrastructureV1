@@ -25,14 +25,14 @@ const FeaturedWorks: React.FC = () => {
         <div className="flex gap-4">
           <button
             onClick={() => scroll('left')}
-            className="w-14 h-14 border border-charcoal/20 flex items-center justify-center hover:bg-charcoal hover:text-white transition-all"
+            className="w-14 h-14 border border-charcoal/20 flex items-center justify-center hover:bg-charcoal hover:text-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             aria-label="Scroll left"
           >
             <ArrowLeft size={20} />
           </button>
           <button
             onClick={() => scroll('right')}
-            className="w-14 h-14 border border-charcoal/20 flex items-center justify-center hover:bg-charcoal hover:text-white transition-all"
+            className="w-14 h-14 border border-charcoal/20 flex items-center justify-center hover:bg-charcoal hover:text-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             aria-label="Scroll right"
           >
             <ArrowRight size={20} />
@@ -48,7 +48,7 @@ const FeaturedWorks: React.FC = () => {
           <Link
             to={`/project/${project.id}`}
             key={project.id}
-            className="min-w-[85vw] md:min-w-[40vw] lg:min-w-[30vw] snap-center group cursor-pointer block"
+            className="min-w-[85vw] md:min-w-[40vw] lg:min-w-[30vw] snap-center group cursor-pointer block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           >
             <div className="relative overflow-hidden aspect-4/3 mb-6 bg-charcoal group-hover:shadow-2xl transition-all duration-500">
               <img
@@ -60,7 +60,7 @@ const FeaturedWorks: React.FC = () => {
                 height="600"
               />
               <div className="absolute top-4 left-4 glass px-3 py-1.5 shadow-xl">
-                <span className="text-white text-[9px] font-bold uppercase tracking-[0.2em] font-technical">
+                <span className="text-white text-[11px] font-bold uppercase tracking-[0.2em] font-technical">
                   {project.category}
                 </span>
               </div>
@@ -68,7 +68,7 @@ const FeaturedWorks: React.FC = () => {
             <h3 className="font-display font-bold text-2xl mb-2 text-charcoal group-hover:text-primary transition-colors tracking-tight">
               {project.title}
             </h3>
-            <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-[0.15em] text-slate-gray font-technical">
+            <div className="flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.15em] text-slate-gray font-technical">
               <span>{project.location}</span>
               <span>{project.area}</span>
             </div>

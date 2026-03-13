@@ -6,6 +6,7 @@ import NotFound from './components/NotFound';
 import { Loader2 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { getMotionSafeScrollBehavior } from './utils/motion';
 
 // Lazy load pages
 const Home = React.lazy(() => import('./components/Home'));
@@ -17,6 +18,9 @@ const ProjectsPage = React.lazy(() => import('./pages/ProjectsPage'));
 const ProcessPage = React.lazy(() => import('./pages/ProcessPage'));
 const CareersPage = React.lazy(() => import('./pages/CareersPage'));
 const ContactPage = React.lazy(() => import('./pages/ContactPage'));
+const PrivacyPage = React.lazy(() => import('./pages/PrivacyPage'));
+const TermsPage = React.lazy(() => import('./pages/TermsPage'));
+const SitemapPage = React.lazy(() => import('./pages/SitemapPage'));
 const HandbookLayout = React.lazy(() => import('./components/HandbookLayout'));
 const HRPolicyPage = React.lazy(() => import('./pages/handbook/HRPolicyPage'));
 const BrandStrategyPage = React.lazy(() => import('./pages/handbook/BrandStrategyPage'));
@@ -27,11 +31,21 @@ const DashboardPage = React.lazy(() => import('./pages/handbook/DashboardPage'))
 gsap.registerPlugin(ScrollTrigger);
 
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   React.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    if (hash) {
+      window.requestAnimationFrame(() => {
+        const target = document.querySelector(hash);
+        if (target instanceof HTMLElement) {
+          target.scrollIntoView({ behavior: getMotionSafeScrollBehavior(), block: 'start' });
+        }
+      });
+      return;
+    }
+
+    window.scrollTo({ top: 0, behavior: getMotionSafeScrollBehavior() });
+  }, [pathname, hash]);
 
   return null;
 }
@@ -65,6 +79,9 @@ const AppContent: React.FC = () => {
             <Route path="/project/:id" element={<ProjectDetails />} />
             <Route path="/careers" element={<CareersPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/sitemap" element={<SitemapPage />} />
 
             <Route path="/handbook" element={<HandbookLayout />}>
               <Route index element={<HRPolicyPage />} />

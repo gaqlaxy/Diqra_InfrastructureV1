@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, FileText, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { prefersReducedMotion } from '../utils/motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,8 +11,13 @@ const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+  const shouldReduceMotion = prefersReducedMotion();
 
   useEffect(() => {
+    if (shouldReduceMotion) {
+      return;
+    }
+
     const ctx = gsap.context(() => {
       // Parallax Background
       gsap.to(imageRef.current, {
@@ -53,7 +59,7 @@ const Hero: React.FC = () => {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [shouldReduceMotion]);
 
   return (
     <header ref={containerRef} className="relative h-screen w-full overflow-hidden flex items-center bg-charcoal">
@@ -86,19 +92,19 @@ const Hero: React.FC = () => {
 
 
           <h1 className="font-display font-bold text-3xl md:text-6xl lg:text-7xl text-white leading-tight md:leading-[1.05] uppercase tracking-tight mb-4 md:mb-5">
-            <span className="reveal-text block opacity-0 translate-y-[100px]">Engineering</span>
-            <span className="reveal-text block opacity-0 translate-y-[100px]">Infrastructure</span>
-            <span className="reveal-text block opacity-0 translate-y-[100px] text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">That Powers Growth.</span>
+            <span className={`reveal-text block ${shouldReduceMotion ? '' : 'opacity-0 translate-y-[100px]'}`}>Engineering</span>
+            <span className={`reveal-text block ${shouldReduceMotion ? '' : 'opacity-0 translate-y-[100px]'}`}>Infrastructure</span>
+            <span className={`reveal-text block text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500 ${shouldReduceMotion ? '' : 'opacity-0 translate-y-[100px]'}`}>That Powers Growth.</span>
           </h1>
 
-          <p className="reveal-text text-white/80 text-sm md:text-lg font-light max-w-2xl mb-6 md:mb-8 leading-relaxed border-l-2 border-white/20 pl-4 md:pl-6 opacity-0 translate-y-[100px]">
+          <p className={`reveal-text text-white/80 text-sm md:text-lg font-light max-w-2xl mb-6 md:mb-8 leading-relaxed border-l-2 border-white/20 pl-4 md:pl-6 ${shouldReduceMotion ? '' : 'opacity-0 translate-y-[100px]'}`}>
             Delivering commercial, government, and industrial construction projects with precision, scale, and uncompromised quality.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 md:gap-6">
             <Link
               to="/#projects"
-              className="hero-btn group relative inline-flex items-center justify-center gap-3 bg-primary text-white px-6 py-3.5 md:px-8 md:py-4.5 text-sm font-bold uppercase tracking-widest overflow-hidden transition-all hover:text-white opacity-0 translate-y-[20px] shadow-lg hover:shadow-primary/20"
+              className={`hero-btn group relative inline-flex items-center justify-center gap-3 bg-primary text-white px-6 py-3.5 md:px-8 md:py-4.5 text-sm font-bold uppercase tracking-widest overflow-hidden transition-all hover:text-white shadow-lg hover:shadow-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal ${shouldReduceMotion ? '' : 'opacity-0 translate-y-[20px]'}`}
               aria-label="View our projects"
             >
               <span className="relative z-10 flex items-center gap-3">
@@ -110,7 +116,7 @@ const Hero: React.FC = () => {
 
             <Link
               to="/contact"
-              className="hero-btn group relative inline-flex items-center justify-center gap-3 border border-white/30 text-white px-6 py-3.5 md:px-8 md:py-4.5 text-sm font-bold uppercase tracking-widest overflow-hidden transition-all hover:border-white hover:text-charcoal opacity-0 translate-y-[20px]"
+              className={`hero-btn group relative inline-flex items-center justify-center gap-3 border border-white/30 text-white px-6 py-3.5 md:px-8 md:py-4.5 text-sm font-bold uppercase tracking-widest overflow-hidden transition-all hover:border-white hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal ${shouldReduceMotion ? '' : 'opacity-0 translate-y-[20px]'}`}
               aria-label="Request a proposal"
             >
               <span className="relative z-10 flex items-center gap-3">
@@ -123,15 +129,15 @@ const Hero: React.FC = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 scroll-indicator opacity-0 translate-y-4">
-        <div className="flex flex-col items-center animate-bounce">
-          <span className="text-[10px] uppercase tracking-widest text-white/50 mb-2 font-technical">Scroll</span>
+      <div className={`absolute bottom-8 left-1/2 -translate-x-1/2 z-10 scroll-indicator ${shouldReduceMotion ? '' : 'opacity-0 translate-y-4'}`}>
+        <div className={`flex flex-col items-center ${shouldReduceMotion ? '' : 'animate-bounce'}`}>
+          <span className="text-[11px] uppercase tracking-widest text-white/50 mb-2 font-technical">Scroll</span>
           <ChevronDown size={20} className="text-white/50" />
         </div>
       </div>
 
       <div className="absolute bottom-0 left-0 w-full border-t border-white/10 bg-charcoal/80 backdrop-blur-md py-4 md:py-6 hidden md:block">
-        <div className="container mx-auto px-12 flex justify-between items-center text-white/50 text-[10px] font-bold tracking-[0.2em] uppercase font-technical">
+        <div className="container mx-auto px-12 flex justify-between items-center text-white/50 text-[11px] font-bold tracking-[0.2em] uppercase font-technical">
           <span>ISO 9001:2015 Certified</span>
           <div className="flex gap-12">
             <span>Safety First Policy</span>
