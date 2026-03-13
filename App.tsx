@@ -22,11 +22,6 @@ const HRPolicyPage = React.lazy(() => import('./pages/handbook/HRPolicyPage'));
 const BrandStrategyPage = React.lazy(() => import('./pages/handbook/BrandStrategyPage'));
 const OperationalGovernancePage = React.lazy(() => import('./pages/handbook/OperationalGovernancePage'));
 const DashboardPage = React.lazy(() => import('./pages/handbook/DashboardPage'));
-const HRMLayout = React.lazy(() => import('./components/HRMLayout'));
-const HRMDashboard = React.lazy(() => import('./pages/hrm/HRMDashboard'));
-const EmployeeManagement = React.lazy(() => import('./pages/hrm/EmployeeManagement'));
-const TaskDelegation = React.lazy(() => import('./pages/hrm/TaskDelegation'));
-const AttendanceLeave = React.lazy(() => import('./pages/hrm/AttendanceLeave'));
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
@@ -49,12 +44,11 @@ const LoadingFallback = () => (
 
 const AppContent: React.FC = () => {
   const location = useLocation();
-  const isHRM = location.pathname.startsWith('/hrm');
   const isAdmin = location.pathname.startsWith('/admin');
   const isHandbook = location.pathname.startsWith('/handbook');
 
-  const hideGlobalNavbar = isHRM || isAdmin || isHandbook;
-  const hideFooter = isHRM || isAdmin || isHandbook;
+  const hideGlobalNavbar = isAdmin || isHandbook;
+  const hideFooter = isAdmin || isHandbook;
 
   return (
     <div className="min-h-screen bg-background-light text-charcoal font-display selection:bg-primary selection:text-white">
@@ -86,14 +80,6 @@ const AppContent: React.FC = () => {
               <Route path="hr-policy" element={<HRPolicyPage />} />
               <Route path="brand-strategy" element={<BrandStrategyPage />} />
               <Route path="operational-governance" element={<OperationalGovernancePage />} />
-            </Route>
-
-            <Route path="/hrm" element={<HRMLayout />}>
-              <Route index element={<HRMDashboard />} />
-              <Route path="employees" element={<EmployeeManagement />} />
-              <Route path="tasks" element={<TaskDelegation />} />
-              <Route path="attendance" element={<AttendanceLeave />} />
-              <Route path="leave" element={<AttendanceLeave />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />

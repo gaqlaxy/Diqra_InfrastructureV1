@@ -91,9 +91,9 @@ const Navbar: React.FC = () => {
   const menuItems = [
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
-    { name: 'Services', path: '/services' },
-    { name: 'Case Studies', path: '/projects' },
-    { name: 'Process', path: '/process' },
+    // { name: 'Services', path: '/services' },
+    { name: 'Projects', path: '/projects' },
+    // { name: 'Process', path: '/process' },
     { name: 'Careers', path: '/careers' },
     { name: 'Contact', path: '/contact' }
   ];
@@ -245,7 +245,7 @@ const Navbar: React.FC = () => {
               <div className="menu-footer-item">
                 <span className="block text-[10px] font-bold text-slate-gray uppercase tracking-widest mb-2 font-technical">[ Email ]</span>
                 <a href="mailto:sales@diqra.com" className="inline-block text-lg md:text-xl font-black text-white bg-primary px-4 py-1 hover:bg-charcoal transition-all uppercase italic duration-300 shadow-lg">
-                  SALES@DIQRA.COM
+                  support@diqra.com
                 </a>
               </div>
 
